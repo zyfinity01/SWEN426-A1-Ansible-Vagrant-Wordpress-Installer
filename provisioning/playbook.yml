@@ -55,8 +55,9 @@
 
     - name: Create my.cnf
       ansible.builtin.template:
-        src: templates/mysql/my.cnf
+        src: provisioning/templates/mysql/my.cnf
         dest: /root/.my.cnf
+        mode: '644'
       when: mysql_new_root_pass.changed
 
 
