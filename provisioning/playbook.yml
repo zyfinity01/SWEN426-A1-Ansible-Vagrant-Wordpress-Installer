@@ -19,8 +19,8 @@
         name: apache2
         state: absent
 
-    - name: Generate a new root password
-      ansible.builtin.command: openssl rand -hex 7
+    - name: Generate new root password
+      ansible.builtin.command: openssl rand -hex 7 creates=/root/.my.cnf
       register: mysql_new_root_pass
 
     - name: Remove anonymous users
