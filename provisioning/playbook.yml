@@ -14,6 +14,44 @@
       - mysql-server
       - python3-mysqldb
 
+    - name: Remove Apache2
+      ansible.builtin.apt:
+        name: apache2
+        state: absent
+
+    - name: Generate a new root password
+      ansible.builtin.command: openssl rand -hex 7
+      register: mysql_new_root_pass
+
+    - name: Remove anonymous users
+      community.mysql.mysql_user:
+        name: ""
+        state: absent
+
+    - name: Remove test database
+      community.mysql.mysql_db:
+        name: test
+        state: absent
+    
+    - name: Update root password
+      community.mysql.mysql_user:
+        name: root
+        host: "{{ item }}"
+        password: "{{ mysql_new_root_pass.stdout }}"
+      with_items:
+        - "{{ ansible_hostname }}"
+        - 127.0.0.1
+        - ::1
+        - localhost
+
+    - name: Output new root password
+      ansible.builtin.debug:
+        msg: "New root password is {{ mysql_new_root_pass.stdout }}"
+
+    - name: Create my.cnf
+      ansible.builtin.template:
+        src: templates/mysql/my.cnf
+        dest: /root/.my.cnf
 
 
 
