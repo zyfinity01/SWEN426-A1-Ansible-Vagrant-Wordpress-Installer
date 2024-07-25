@@ -27,12 +27,14 @@
       community.mysql.mysql_user:
         name: ""
         state: absent
+      when: mysql_new_root_pass.changed
 
     - name: Remove test database
       community.mysql.mysql_db:
         name: test
         state: absent
-    
+      when: mysql_new_root_pass.changed
+
     - name: Update root password
       community.mysql.mysql_user:
         name: root
@@ -43,15 +45,19 @@
         - 127.0.0.1
         - ::1
         - localhost
+      when: mysql_new_root_pass.changed
 
     - name: Output new root password
       ansible.builtin.debug:
         msg: "New root password is {{ mysql_new_root_pass.stdout }}"
+      when: mysql_new_root_pass.changed
+
 
     - name: Create my.cnf
       ansible.builtin.template:
         src: templates/mysql/my.cnf
         dest: /root/.my.cnf
+      when: mysql_new_root_pass.changed
 
 
 
