@@ -6,6 +6,15 @@
     - name: Install required packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
-      - php-cli
+      - php
+      - php-fpm
+      - php-mysql
+      - php-xml
       - nginx
       - mysql-server
+      - python3-mysqldb
+
+
+
+
+
