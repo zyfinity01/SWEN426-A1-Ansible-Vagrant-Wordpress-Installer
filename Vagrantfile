@@ -8,6 +8,7 @@
 Vagrant.configure("2") do |config|
   # base box to use
   config.vm.box = "ubuntu/jammy64"
+  config.vm.network "private_network", ip: "192.168.33.20"
 
   # VM specs
   config.vm.provider "virtualbox" do |vb|
