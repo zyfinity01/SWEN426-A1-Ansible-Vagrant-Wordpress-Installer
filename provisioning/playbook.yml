@@ -60,5 +60,39 @@
       when: mysql_new_root_pass.changed
 
 
+    # nginx
+    - name: Install nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+    - name: Start nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+
+    - name: Create nginx config
+      ansible.builtin.template:
+        src: templates/nginx/default
+        dest: /etc/nginx/sites-available/default
+      notify: restart nginx
+
+
+
+
+
+
+  #handlers
+
+  handlers:
+    - name: restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
+
+
+
+
+
+
 
 
