@@ -2,23 +2,16 @@
 - name: Creating a Wordpress site
   hosts: all
   become: true
+  roles:
+    - gandhinira.php
   tasks:
     - name: Install required packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
       - unzip
-      - php
-      - php-fpm
-      - php-mysql
-      - php-xml
       - nginx
       - mysql-server
       - python3-mysqldb
-
-    - name: Remove Apache2
-      ansible.builtin.apt:
-        name: apache2
-        state: absent
 
     - name: Generate new root password
       ansible.builtin.command: openssl rand -hex 7 creates=/root/.my.cnf
