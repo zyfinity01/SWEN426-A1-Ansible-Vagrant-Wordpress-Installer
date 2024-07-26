@@ -5,29 +5,12 @@
   roles:
     - gandhinira.php
     - gandhinira.mysql
+    - gandhinira.nginx
   tasks:
     - name: Install required packages
       apt: name={{item}} state=present update_cache=yes
       with_items:
       - unzip
-      - nginx
-
-    # nginx
-    - name: Install nginx
-      ansible.builtin.apt:
-        name: nginx
-        state: present
-    - name: Start nginx
-      ansible.builtin.service:
-        name: nginx
-        state: started
-
-    - name: Create nginx config
-      ansible.builtin.template:
-        src: templates/nginx/default
-        dest: /etc/nginx/sites-available/default
-      notify: restart nginx
-
 
     # WordPress
     - name: Copy wordpress zip file into /tmp
@@ -87,24 +70,6 @@
         state: import
         name: wordpress
       when: db_exist.rc > 0
-
-
-
-
-
-
-
-
-
-
-
-  #handlers
-
-  handlers:
-    - name: restart nginx
-      ansible.builtin.service:
-        name: nginx
-        state: restarted
 
 
 

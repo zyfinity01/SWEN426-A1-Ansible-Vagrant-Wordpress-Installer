@@ -1,0 +1,20 @@
+---
+- name: Install NGINX
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - nginx
+
+- name: Install nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+- name: Start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+
+- name: Create nginx config
+  ansible.builtin.template:
+    src: default
+    dest: /etc/nginx/sites-available/default
+  notify: restart nginx
