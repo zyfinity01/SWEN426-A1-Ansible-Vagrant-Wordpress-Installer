@@ -1,8 +1,9 @@
 ---
-- name: Copy wordpress zip file into /tmp
-  ansible.builtin.copy:
-    src: wordpress.zip
-    dest: /tmp/wordpress.zip
+- name: Download WordPress
+  ansible.builtin.get_url:
+    url: "https://wordpress.org/latest.zip"
+    dest: "/tmp/wordpress.zip"
+    mode: '0644'
 - name: Unzip WordPress
   ansible.builtin.unarchive:
     src: /tmp/wordpress.zip
@@ -19,6 +20,7 @@
     remote_src: true
     src: /tmp/wordpress/
     dest: /var/www/book.example.com
+  notify: Restart web server
 - name: Create WordPress MySQL database
   community.mysql.mysql_db:
     name: wordpress
