@@ -10,6 +10,11 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/jammy64"
   config.vm.network "private_network", ip: "192.168.33.20"
 
+  # Configure vagrant-vbguest plugin
+  config.vbguest.auto_update = true
+  config.vbguest.no_install = false
+  config.vbguest.no_remote = false
+
   # VM specs
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
