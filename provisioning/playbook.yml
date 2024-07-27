@@ -2,23 +2,12 @@
 - name: Creating a Wordpress site
   hosts: all
   become: true
+  pre_tasks:
+    - name: Install required packages
+      apt: name={{item}} state=present update_cache=yes
+      with_items: ["unzip"]
   roles:
     - gandhinira.php
     - gandhinira.mysql
     - gandhinira.nginx
     - gandhinira.wp
-  tasks:
-    - name: Install required packages
-      apt: name={{item}} state=present update_cache=yes
-      with_items:
-      - unzip
-
-
-
-
-
-
-
-
-
-
