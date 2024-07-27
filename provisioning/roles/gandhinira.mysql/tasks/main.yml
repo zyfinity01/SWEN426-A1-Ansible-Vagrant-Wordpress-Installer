@@ -1,7 +1,12 @@
 ---
 - name: Install MySQL
-  apt: name={{item}} state=present update_cache=yes
-  with_items: [mysql-server, python3-mysqldb]
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - mysql-server
+    - python3-mysqldb
 - name: Generate new root password
   ansible.builtin.command: openssl rand -hex 7 creates=/root/.my.cnf
   register: mysql_new_root_pass
@@ -20,7 +25,11 @@
     name: root
     host: '{{ item }}'
     password: '{{ mysql_new_root_pass.stdout }}'
-  with_items: ['{{ ansible_hostname }}', '127.0.0.1', '::1', 'localhost']
+  loop:
+    - '{{ ansible_hostname }}'
+    - '127.0.0.1'
+    - '::1'
+    - 'localhost'
   when: mysql_new_root_pass.changed
 - name: Output new root password
   ansible.builtin.debug:

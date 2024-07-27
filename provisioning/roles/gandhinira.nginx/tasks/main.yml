@@ -1,7 +1,11 @@
 ---
 - name: Install NGINX
-  apt: name={{item}} state=present update_cache=yes
-  with_items: [nginx]
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - nginx
 - name: Install nginx
   ansible.builtin.apt:
     name: nginx
