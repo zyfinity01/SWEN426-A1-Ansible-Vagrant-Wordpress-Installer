@@ -1,0 +1,14 @@
+[general]
+ignore = B1
+contrib = contrib-title-conventional-commits
+
+[title-conventional-commits]
+type-case = lower
+type-required = true
+type-list = feat, fix, docs, style, refactor, test, chore
+scope-separator = /
+scope-required = true
+scope-case = lower
+subject-separator = ": "
+subject-min-length = 5
+subject-max-length = 50
